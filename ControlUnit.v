@@ -1,3 +1,4 @@
+//JAL jumps to a PC-relative immediate address, while JALR jumps to an address computed from a register + immediate.
 module control_unit (
     input  [6:0] Opcode,
     input  [2:0] funct3,
@@ -24,18 +25,18 @@ module control_unit (
         ALUOp    = 2'b00;
 
         case (Opcode)
-            7'b0110011: begin
+            7'b0110011: begin //R-type 
                 RegWrite = 1;
                 ALUOp    = 2'b00;
             end
 
-            7'b0010011: begin
+            7'b0010011: begin // I-type 
                 RegWrite = 1;
                 ALUSrc   = 1;
                 ALUOp    = 2'b01;
             end
 
-            7'b0000011: begin
+            7'b0000011: begin //Load 
                 RegWrite = 1;
                 MemRead  = 1;
                 MemtoReg = 1;
@@ -43,31 +44,31 @@ module control_unit (
                 ALUOp    = 2'b10;
             end
 
-            7'b0100011: begin
+            7'b0100011: begin // store
                 MemWrite = 1;
                 ALUSrc   = 1;
                 ALUOp    = 2'b10;
             end
 
-            7'b1100011: begin
+            7'b1100011: begin // branch 
                 Branch = 1;
                 ALUOp  = 2'b11;
             end
 
-            7'b1101111: begin
+            7'b1101111: begin //JAL 
                 RegWrite = 1;
                 Jump     = 1;
                 ALUOp    = 2'b10;
             end
 
-            7'b1100111: begin
+            7'b1100111: begin //JALR
                 RegWrite = 1;
                 Jump     = 1;
                 ALUSrc   = 1;
                 ALUOp    = 2'b10;
             end
 
-            7'b0110111: begin
+            7'b0110111: begin //Load upper immediate 
                 RegWrite = 1;
                 ALUSrc   = 1;
                 ALUOp    = 2'b10;
